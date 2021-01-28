@@ -15,7 +15,7 @@ data "google_compute_network" "default_network" {
 
 resource "google_compute_firewall" "allow_ssh" {
   name    = "allow-ssh"
-  network = data.default_network.name
+  network = data.google_compute_network.default_network.name
 
   allow {
     protocol = "tcp"
@@ -28,7 +28,7 @@ resource "google_compute_firewall" "allow_ssh" {
 
 resource "google_compute_firewall" "allow_http" {
   name    = "allow-http"
-  network = data.default_network.name
+  network = data.google_compute_network.default_network.name
   allow {
     protocol = "tcp"
     ports    = ["5000"]
@@ -39,7 +39,7 @@ resource "google_compute_firewall" "allow_http" {
 
 resource "google_compute_instance" "appserver_gcp" {
   name    = "appserver"
-  machine = "f1-micro"
+  machine_type = "f1-micro"
   zone    = "us-central1-a"
 
   metadata = {
@@ -57,7 +57,7 @@ resource "google_compute_instance" "appserver_gcp" {
   }
 
   network_interface {
-    network = data.default_network.name
+    network = data.google_compute_network.default_network.name
     access_config {
     }
   }
